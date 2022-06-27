@@ -7,6 +7,26 @@
     <%= csp_meta_tag %>
 
     <%= stylesheet_link_tag "application" %>
+    <script type="importmap">
+      {
+        "imports": {
+          "stimulus": "https://cdn.skypack.dev/stimulus",
+          "@hotwired/turbo": "https://cdn.skypack.dev/@hotwired/turbo",
+          "@seanpdoyle/turbo_stream_button": "<%= asset_url "turbo_stream_button.js" %>"
+        }
+      }
+    </script>
+    <script type="module">
+      import "@hotwired/turbo"
+      import { Application } from "stimulus"
+      import { TurboStreamButtonController } from "@seanpdoyle/turbo_stream_button"
+
+      window.application = Application.start()
+      application.register("turbo-stream-button", TurboStreamButtonController)
+
+      <%= yield :javascript %>
+    </script>
+    <script type="module" src="https://unpkg.com/es-module-shims@0.10.1/dist/es-module-shims.js"></script>
   </head>
 
   <body>

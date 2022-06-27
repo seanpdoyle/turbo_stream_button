@@ -1,0 +1,30 @@
+{
+  "name": "@seanpdoyle/turbo_stream_button",
+  "private": true,
+  "type": "module",
+  "main": "app/assets/javascripts/turbo_stream_button.js",
+  "module": "app/assets/javascripts/turbo_stream_button.js",
+  "types": "app/assets/javascripts/turbo_stream_button/index.d.ts",
+  "files": [
+    "app/assets/javascripts/**/*"
+  ],
+  "version": "0.1.0",
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^13.3.0",
+    "@rollup/plugin-typescript": "^8.3.2",
+    "rollup": "^2.75.1",
+    "rollup-plugin-exclude-dependencies-from-bundle": "^1.1.22",
+    "ts-loader": "^9.1.1",
+    "tslib": "^2.4.0",
+    "typescript": "^4.2.4"
+  },
+  "dependencies": {
+    "stimulus": "^2.0.0",
+    "@hotwired/turbo": "^7.0.0"
+  },
+  "scripts": {
+    "clean": "rm -rf app/assets/javascripts/*",
+    "build": "tsc --emitDeclarationOnly && rollup -c",
+    "prepublish": "yarn build"
+  }
+}

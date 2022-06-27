@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "declarationMap": true,
+    "esModuleInterop": true,
+    "lib": [ "dom", "dom.iterable", "esnext" ],
+    "module": "es2015",
+    "moduleResolution": "node",
+    "noImplicitAny": true,
+    "noUnusedLocals": true,
+    "outDir": "app/assets/javascripts/turbo_stream_button",
+    "rootDir": "packages",
+    "strict": true,
+    "target": "es2017"
+  },
+  "include": [ "packages" ]
+}

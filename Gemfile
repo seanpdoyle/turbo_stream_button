@@ -9,10 +9,10 @@ gemspec
 
 rails_version = ENV.fetch("RAILS_VERSION", "7.0")
 
-if rails_version == "main"
-  rails_constraint = { github: "rails/rails" }
+rails_constraint = if rails_version == "main"
+  {github: "rails/rails"}
 else
-  rails_constraint = "~> #{rails_version}.0"
+  "~> #{rails_version}.0"
 end
 
 gem "rails", rails_constraint
@@ -20,8 +20,12 @@ gem "sprockets-rails"
 
 gem "puma"
 gem "rexml"
+gem "standard"
 
 group :test do
+  gem "action_dispatch-testing-integration-capybara",
+    github: "thoughtbot/action_dispatch-testing-integration-capybara", tag: "v0.1.0",
+    require: "action_dispatch/testing/integration/capybara/minitest"
   gem "capybara"
   gem "capybara_accessible_selectors", github: "citizensadvice/capybara_accessible_selectors", branch: "main"
   gem "selenium-webdriver"

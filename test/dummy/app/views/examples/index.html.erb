@@ -1,0 +1,101 @@
+<%= content_for :javascript do %>
+  import { Controller } from "stimulus"
+  import { TemplateInstance } from "https://cdn.skypack.dev/@github/template-parts"
+
+  application.register("clipboard", class extends Controller {
+    copy({ target: { value } }) {
+      navigator.clipboard.writeText(value)
+    }
+  })
+
+  application.register("clone", class extends Controller {
+    static targets = [ "template" ]
+    static values = { count: Number, counter: String }
+
+    templateTargetConnected(target) {
+      const templateInstance = new TemplateInstance(target, {
+        [this.counterValue]: this.countValue
+      })
+
+      target.content.replaceChildren(templateInstance)
+
+      this.countValue++
+    }
+  })
+<% end %>
+
+<section>
+  <h1>Say Hello</h1>
+
+  <%= render "turbo_stream_button", content: "Say hello", id: "hello_button" do %>
+    <turbo-stream action="after" target="hello_button">
+      <template><%= tag.div(params.fetch(:message, "Hello, world"), role: "status") %></template>
+    </turbo-stream>
+  <% end %>
+</section>
+
+<section>
+  <h1>Copy to Clipboard</h1>
+
+  <div id="clipboard_flash" role="alert"></div>
+
+  <%= render "turbo_stream_button", content: "Copy to clipboard", value: params.fetch(:invitation_code, "abc123"),
+                                    data: { controller: "clipboard", action: "click->clipboard#copy" } do %>
+    <turbo-stream action="append" target="clipboard_flash">
+      <template>
+        <div role="status">Copied "<%= params.fetch(:invitation_code, "abc123") %>" to clipboard.</div>
+      </template>
+    </turbo-stream>
+  <% end %>
+
+  <label for="invitation_code">Invitation code (paste here)</label>
+  <input id="invitation_code">
+</section>
+
+<section>
+  <h1>Nesting</h1>
+
+  <div id="nesting_flash" role="alert"></div>
+
+  <%= render "turbo_stream_button", content: "Append to flash" do %>
+    <turbo-stream action="append" target="nesting_flash">
+      <template>
+        <div id="a_flash_message" role="status">
+          <%= params.fetch(:message, "Hello, world") %>
+
+          <%= render "turbo_stream_button", content: "Dismiss" do %>
+            <turbo-stream action="remove" target="a_flash_message"></turbo-stream>
+          <% end %>
+        </div>
+      </template>
+    </turbo-stream>
+  <% end %>
+</section>
+
+<section>
+  <h1>Form fields</h1>
+
+  <%= form_with scope: :applicant do |form| %>
+    <fieldset data-controller="clone" data-clone-counter-value="counter" data-clone-count-value="0">
+      <legend>References</legend>
+
+      <ol id="<%= form.field_id(:references) %>"></ol>
+
+      <%= form.fields :reference_attributes, index: "{{counter}}" do |reference_form| %>
+        <%= render "turbo_stream_button", content: "Add reference" do %>
+          <turbo-stream action="append" target="<%= form.field_id(:references) %>">
+            <template data-clone-target="template">
+              <li id="<%= reference_form.field_id(:fields) %>">
+                <%= reference_form.label :referrer %>
+                <%= reference_form.text_field :referrer %>
+
+                <%= reference_form.label :relationship %>
+                <%= reference_form.text_field :relationship %>
+              </li>
+            </template>
+          </turbo-stream>
+        <% end %>
+      <% end %>
+    </fieldset>
+  <% end %>
+</section>
