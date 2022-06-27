@@ -1,6 +1,9 @@
-require "turbo_stream_button/version"
-require "turbo_stream_button/railtie"
+require "zeitwerk"
+loader = Zeitwerk::Loader.for_gem
+loader.setup
 
 module TurboStreamButton
   # Your code goes here...
 end
+
+loader.eager_load

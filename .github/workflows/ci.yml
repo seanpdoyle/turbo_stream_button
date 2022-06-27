@@ -1,0 +1,43 @@
+name: "CI Tests"
+
+on:
+  - "pull_request"
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby-version:
+          - "2.7"
+          - "3.0"
+          - "3.1"
+        rails-version:
+          - "7.0"
+          - "6.1"
+          - "main"
+
+    env:
+      RAILS_VERSION: ${{ matrix.rails-version }}
+
+    name: ${{ format('Tests (Ruby {0}, Rails {1})', matrix.ruby-version, matrix.rails-version) }}
+    runs-on: "ubuntu-latest"
+
+    steps:
+      - uses: "actions/checkout@v2"
+      - uses: "actions/setup-node@v2"
+        with:
+          node-version: "14"
+      - uses: "ruby/setup-ruby@v1"
+        with:
+          ruby-version: ${{ matrix.ruby-version }}
+          bundler-cache: true
+
+      - run: yarn install
+      - run: yarn build
+      - run: bin/rails test test/**/*_test.rb
+
+      - name: Fail when generated changes are not checked-in
+        run: |
+          git update-index --refresh
+          git diff-index --quiet HEAD --
