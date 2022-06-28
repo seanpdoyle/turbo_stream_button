@@ -20,6 +20,7 @@ if ENV["NICE_PARTIALS"].to_i.positive?
 end
 
 gem "rails", rails_constraint
+gem "turbo-rails"
 gem "sprockets-rails"
 
 gem "puma"

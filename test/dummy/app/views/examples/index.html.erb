@@ -2,13 +2,13 @@
   import { Controller } from "stimulus"
   import { TemplateInstance } from "https://cdn.skypack.dev/@github/template-parts"
 
-  application.register("clipboard", class extends Controller {
+  class ClipboardController extends Controller {
     copy({ target: { value } }) {
       navigator.clipboard.writeText(value)
     }
-  })
+  }
 
-  application.register("clone", class extends Controller {
+  class CloneController extends Controller {
     static targets = [ "template" ]
     static values = { count: Number, counter: String }
 
@@ -21,16 +21,17 @@
 
       this.countValue++
     }
-  })
+  }
+
+  application.register("clipboard", ClipboardController)
+  application.register("clone", CloneController)
 <% end %>
 
 <section>
   <h1>Say Hello</h1>
 
   <%= render "turbo_stream_button", content: "Say hello", id: "hello_button" do %>
-    <turbo-stream action="after" target="hello_button">
-      <template><%= tag.div(params.fetch(:message, "Hello, world"), role: "status") %></template>
-    </turbo-stream>
+    <%= turbo_stream.after "hello_button", tag.div(params.fetch(:message, "Hello, world"), role: "status") %>
   <% end %>
 </section>
 
