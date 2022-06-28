@@ -8,6 +8,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        nice-partials: [true, false]
         ruby-version:
           - "2.7"
           - "3.0"

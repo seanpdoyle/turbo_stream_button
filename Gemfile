@@ -15,6 +15,10 @@ else
   "~> #{rails_version}.0"
 end
 
+if ENV["NICE_PARTIALS"].to_i.positive?
+  gem "nice_partials"
+end
+
 gem "rails", rails_constraint
 gem "sprockets-rails"
 
