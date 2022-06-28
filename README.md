@@ -1,12 +1,31 @@
 # `<button>` + `<turbo-stream>`
 
-Combine `<button>` and `<turbo-stream>` to drive client-side interactions
-with declarative server-generated HTML
+Harness the power of [Turbo Streams][] to declare `click` event handlers as a
+series of HTML mutations.
+
+Combine built-in `<button>` elements with `<turbo-stream>` elements to
+declaratively drive client-side interactions with server-generated HTML.
+
+```html
+<button type="button" id="call-to-action"
+        data-controller="turbo-stream-button"
+        data-action="click->turbo-stream-button#evaluate">
+  <span>Click me to insert the template's contents after this button!</span>
+
+  <template data-turbo-stream-button-target="turboStreams">
+    <turbo-stream action="after" target="call-to-action">
+      <template>You clicked the button!</template>
+    </turbo-stream>
+  </template>
+</button>
+```
+
+[Turbo Streams]: https://turbo.hotwired.dev/reference/streams
 
 ## Usage
 
-First, register the `turbo-stream-button` controller in your Stimulus
-application:
+In your JavaScript code, import and register the `turbo-stream-button`
+controller with your Stimulus application:
 
 ```javascript
 import "@hotwired/turbo"
@@ -17,71 +36,46 @@ const application = Application.start()
 application.register("turbo-stream-button", TurboStreamButtonController)
 ```
 
-Next, invoke the `turbo_stream_button` view partial to render the `<button>`.
-The partial assigns:
+In your Rails templates, render the `turbo_stream_button` view partial to create
+the `<button>` element. The view partial renders:
 
-* renders the template's block content into a `<template>` element
-* renders the `content:` local assignment as the button's visible content
-* renders any other local assignments as the `<button>` element's HTML attributes
+* `content:` as the `<button>` element's content
+* other keyword arguments as the `<button>` element's attributes
+* block content as the `<template>` element's content
 
-```erb
-<% content = capture do %>
-  <span>Click me!</span>
-<% end %>
+When the button is clicked, the `turbo-stream-button` [Stimulus controller][]
+invokes the `evaluate` [Action][] to insert the contents of the [`<template>`
+element][mdn-template], activating any `<turbo-stream>` elements nested inside.
 
-<%= render("turbo_stream_button", content:, id: "call-to-action") do %>
-  <%= turbo_stream.after("call-to-action") { "You clicked the call to action!" } %>
-<% end %>
+[Stimulus controller]: https://stimulus.hotwired.dev/handbook/hello-stimulus#controllers-bring-html-to-life
+[Action]: https://stimulus.hotwired.dev/handbook/building-something-real#connecting-the-action
+[mdn-template]: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/template
 
-<%# =>  <button type="button" id="call-to-action"
-                data-controller="turbo-stream-button"
-                data-action="click->turbo-stream-button#evaluate">
-          <span>Click me!</span>
-
-          <template data-turbo-stream-button-target="turboStreams">
-            <turbo-stream action="after" target="call-to-action">
-              <template>You clicked the call to action!</template>
-            </turbo-stream>
-          </template>
-        </button> %>
-```
-
-When the button is clicked, the `turbo-stream-button#evaluate` Stimulus action
-will append the contents of the `<template>` element, which can activate any
-`<turbo-stream>` elements nested inside.
-
-### Hello, world
+### Introductory: Hello, world
 
 ```html+erb
-<script type="module">
-  import "@hotwired/turbo"
-  import { Application } from "stimulus"
-  import { TurboStreamButtonController } from "@seanpdoyle/turbo_stream_button"
+<% content = capture do %>
+  <span>Click me to say "hello"</span>
+<% end %>
 
-  const application = Application.start()
-  application.register("turbo-stream-button", TurboStreamButtonController)
-</script>
-
-<%= render "turbo_stream_button", content: "Click to say hello", id: "the-button" do %>
-  <turbo-stream action="after" target="the-button">
-    <template>Hello, from #the-button!</template>
-  </turbo-stream>
+<%= render "turbo_stream_button", content: content, id: "the-button" do %>
+  <%= turbo_stream.after "the-button", "Hello, world!" %>
 <% end %>
 
 <%# =>  <button type="button" id="the-button"
                 data-controller="turbo-stream-button"
                 data-action="click->turbo-stream-button#evaluate">
-          Click to say hello
+          <span>Click me to say "hello"</span>
 
           <template data-turbo-stream-target="turboStreams">
             <turbo-stream action="after" target="the-button">
-              <template>Hello, from #the-button!</template>
+              <template>Hello, world!</template>
             </turbo-stream>
           </template>
         </button> %>
 ```
 
-### Composing with other Stimulus controllers
+### Intermediate: Compose with other Stimulus controller actions
 
 ```html+erb
 <script type="module">
@@ -89,22 +83,24 @@ will append the contents of the `<template>` element, which can activate any
   import { Application, Controller } from "stimulus"
   import { TurboStreamButtonController } from "@seanpdoyle/turbo_stream_button"
 
-  const application = Application.start()
-  application.register("turbo-stream-button", TurboStreamButtonController)
-  application.register("clipboard", class extends Controller {
+  class ClipboardController extends Controller {
     copy({ target: { value } }) {
       navigator.clipboard.writeText(value)
     }
-  })
+  }
+
+  const application = Application.start()
+  application.register("turbo-stream-button", TurboStreamButtonController)
+  application.register("clipboard", ClipboardController)
 </script>
 
-<div id="flash"></div>
+<div id="flash" role="alert"></div>
 
 <%= render "turbo_stream_button", content: "Copy to clipboard", value: "invitation-code-abc123",
                                   data: { controller: "clipboard", action: "click->clipboard#copy" } do %>
   <turbo-stream action="append" target="flash">
     <template>
-      <div role="alert">Copied "invitation-code-abc123" to clipboard!</div>
+      <p>Copied "invitation-code-abc123" to your clipboard!</p>
     </template>
   </turbo-stream>
 <% end %>
@@ -117,25 +113,16 @@ will append the contents of the `<template>` element, which can activate any
           <template data-turbo-stream-target="turboStreams">
             <turbo-stream action="append" target="flash">
               <template>
-                <div role="alert">Copied "invitation-code-abc123" to clipboard!</div>
+                <p>Copied "invitation-code-abc123" to your clipboard!</p>
               </template>
             </turbo-stream>
           </template>
         </button> %>
 ```
 
-### Nesting buttons
+### Advanced: Nest buttons
 
 ```html+erb
-<script type="module">
-  import "@hotwired/turbo"
-  import { Application } from "stimulus"
-  import { TurboStreamButtonController } from "@seanpdoyle/turbo_stream_button"
-
-  const application = Application.start()
-  application.register("turbo-stream-button", TurboStreamButtonController)
-</script>
-
 <div id="flash" role="alert"></div>
 
 <%= render "turbo_stream_button", content: "Append flash message" do %>
@@ -144,16 +131,42 @@ will append the contents of the `<template>` element, which can activate any
       <div id="a_flash_message" role="status">
         Hello, world!
 
-        <%= render "turbo_stream_button", content: "Dismiss flash message" do %>
-          <turbo-stream action="remove" target="a_flash_message"></turbo-stream>
+        <%= render "turbo_stream_button", content: "Dismiss" do %>
+          <%= turbo_stream.remove "a_flash_message" %>
         <% end %>
       </div>
     </template>
   </turbo-stream>
 <% end %>
+
+<%# =>  <button type="button"
+                data-controller="turbo-stream-button"
+                data-action="click->turbo-stream-button#evaluate">
+          Append flash message
+
+          <template data-turbo-stream-target="turboStreams">
+            <turbo-stream action="append" target="flash">
+              <template>
+                <div id="a_flash_message" role="status">
+                  Hello, world!
+
+                  <button type="button"
+                          data-controller="turbo-stream-button"
+                          data-action="click->turbo-stream-button#evaluate">
+                    Dismiss
+
+                    <template data-turbo-stream-target="turboStreams">
+                      <turbo-stream action="remove" target="a_flash_message"></turbo-stream>
+                    </template>
+                  </button>
+                </div>
+              </template>
+            </turbo-stream>
+          </template>
+        </button> %>
 ```
 
-### Appending form controls
+### Advanced: Append form controls
 
 ```html+erb
 <script type="module">
@@ -162,9 +175,7 @@ will append the contents of the `<template>` element, which can activate any
   import { TurboStreamButtonController } from "@seanpdoyle/turbo_stream_button"
   import { TemplateInstance } from "https://cdn.skypack.dev/@github/template-parts"
 
-  const application = Application.start()
-  application.register("turbo-stream-button", TurboStreamButtonController)
-  application.register("clone", class extends Controller {
+  class CloneController extends Controller {
     static targets = [ "template" ]
     static values = { count: Number, counter: String }
 
@@ -177,10 +188,14 @@ will append the contents of the `<template>` element, which can activate any
 
       this.countValue++
     }
-  })
+  }
+
+  const application = Application.start()
+  application.register("turbo-stream-button", TurboStreamButtonController)
+  application.register("clone", CloneController)
 </script>
 
-<%= form_with model: Applicant.new do |form| %>
+<%= form_with scope: :applicant do |form| %>
   <fieldset data-controller="clone" data-clone-counter-value="counter" data-clone-count-value="0">
     <legend>References</legend>
 
@@ -203,7 +218,41 @@ will append the contents of the `<template>` element, which can activate any
     <% end %>
   </fieldset>
 <% end %>
+
+<%# =>  <button type="button"
+                data-controller="turbo-stream-button"
+                data-action="click->turbo-stream-button#evaluate">
+          Add reference
+
+          <template data-turbo-stream-button-target="turboStreams">
+            <turbo-stream action="append" target="references">
+              <template data-clone-target="template">
+                <li>
+                  <label for="applicant_reference_attributes_{{counter}}_referrer">Referrer</label>
+                  <input type="text" name="applicant[reference_attributes][{{counter}}][referrer]" id="applicant_reference_attributes_{{counter}}_referrer">
+
+                  <label for="applicant_reference_attributes_{{counter}}_relationship">Relationship</label>
+                  <input type="text" name="applicant[reference_attributes][{{counter}}][relationship]" id="applicant_reference_attributes_{{counter}}_relationship">
+                </li>
+              </template>
+            </turbo-stream>
+          </template>
+        </button> %>
 ```
+
+## Exploring examples
+
+To poke around with some working examples, start the [dummy application][]
+locally:
+
+```sh
+cd test/dummy
+bundle exec rails server --port 3000
+```
+
+Then, visit <http://localhost:3000/examples>.
+
+[dummy application]: ./test/dummy
 
 ## Integrating with [`nice_partials`][nice_partials]
 
