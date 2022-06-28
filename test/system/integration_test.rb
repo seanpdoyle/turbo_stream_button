@@ -25,10 +25,6 @@ class IntegrationTest < ApplicationSystemTestCase
       click_on "Copy to clipboard"
 
       within(:alert) { assert_status message }
-
-      find_field("Invitation code").send_keys([:meta, "v"])
-
-      assert_field "Invitation code", with: "invitation-code-abc123"
     end
   end
 

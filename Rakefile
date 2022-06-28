@@ -15,6 +15,8 @@ namespace :test do
 
   desc "Run system tests only"
   task system: %w[test:prepare] do
+    $: << "test"
+
     Rails::TestUnit::Runner.rake_run(["test/system"])
   end
 end

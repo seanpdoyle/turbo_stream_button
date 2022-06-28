@@ -5,6 +5,51 @@ with declarative server-generated HTML
 
 ## Usage
 
+First, register the `turbo-stream-button` controller in your Stimulus
+application:
+
+```javascript
+import "@hotwired/turbo"
+import { Application } from "stimulus"
+import { TurboStreamButtonController } from "@seanpdoyle/turbo_stream_button"
+
+const application = Application.start()
+application.register("turbo-stream-button", TurboStreamButtonController)
+```
+
+Next, invoke the `turbo_stream_button` view partial to render the `<button>`.
+The partial assigns:
+
+* renders the template's block content into a `<template>` element
+* renders the `content:` local assignment as the button's visible content
+* renders any other local assignments as the `<button>` element's HTML attributes
+
+```erb
+<% content = capture do %>
+  <span>Click me!</span>
+<% end %>
+
+<%= render("turbo_stream_button", content:, id: "call-to-action") do %>
+  <%= turbo_stream.after("call-to-action") { "You clicked the call to action!" } %>
+<% end %>
+
+<%# =>  <button type="button" id="call-to-action"
+                data-controller="turbo-stream-button"
+                data-action="click->turbo-stream-button#evaluate">
+          <span>Click me!</span>
+
+          <template data-turbo-stream-button-target="turboStreams">
+            <turbo-stream action="after" target="call-to-action">
+              <template>You clicked the call to action!</template>
+            </turbo-stream>
+          </template>
+        </button> %>
+```
+
+When the button is clicked, the `turbo-stream-button#evaluate` Stimulus action
+will append the contents of the `<template>` element, which can activate any
+`<turbo-stream>` elements nested inside.
+
 ### Hello, world
 
 ```html+erb
@@ -139,13 +184,13 @@ with declarative server-generated HTML
   <fieldset data-controller="clone" data-clone-counter-value="counter" data-clone-count-value="0">
     <legend>References</legend>
 
-    <ol id="<%= form.field_id(:references) %>"></ol>
+    <ol id="references"></ol>
 
     <%= form.fields :reference_attributes, index: "{{counter}}" do |reference_form| %>
       <%= render "turbo_stream_button", content: "Add reference" do %>
-        <turbo-stream action="append" target="<%= form.field_id(:references) %>">
+        <turbo-stream action="append" target="references">
           <template data-clone-target="template">
-            <li id="<%= reference_form.field_id(:fields) %>">
+            <li>
               <%= reference_form.label :referrer %>
               <%= reference_form.text_field :referrer %>
 
