@@ -79,13 +79,13 @@
     <fieldset data-controller="clone" data-clone-counter-value="counter" data-clone-count-value="0">
       <legend>References</legend>
 
-      <ol id="<%= form.field_id(:references) %>"></ol>
+      <ol id="references"></ol>
 
       <%= form.fields :reference_attributes, index: "{{counter}}" do |reference_form| %>
         <%= render "turbo_stream_button", content: "Add reference" do %>
-          <turbo-stream action="append" target="<%= form.field_id(:references) %>">
+          <turbo-stream action="append" target="references">
             <template data-clone-target="template">
-              <li id="<%= reference_form.field_id(:fields) %>">
+              <li>
                 <%= reference_form.label :referrer %>
                 <%= reference_form.text_field :referrer %>
 

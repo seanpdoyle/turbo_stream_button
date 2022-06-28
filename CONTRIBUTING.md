@@ -84,8 +84,9 @@ You can run tests with a specific version of `rails` by setting the
 
 ```sh
 export RAILS_VERSION=7.0
+rm Gemfile.lock
 bundle install
-bin/test test/**/*_test.rb
+bin/rails test:all
 ```
 
 To execute the test suite against `main`, set `RAILS_VERSION` to `main`:
