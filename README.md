@@ -14,11 +14,13 @@ declaratively drive client-side interactions with server-generated HTML.
 
   <template data-turbo-stream-button-target="turboStreams">
     <turbo-stream action="after" target="call-to-action">
-      <template>You clicked the button!</template>
+      <template><p>You clicked the button!</p></template>
     </turbo-stream>
   </template>
 </button>
 ```
+
+[Try it out.](https://jsfiddle.net/toybqx89/)
 
 [Turbo Streams]: https://turbo.hotwired.dev/reference/streams
 
