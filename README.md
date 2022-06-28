@@ -205,6 +205,38 @@ will append the contents of the `<template>` element, which can activate any
 <% end %>
 ```
 
+## Integrating with [`nice_partials`][nice_partials]
+
+If an application depends on [`nice_partials`][nice_partials], the
+`turbo_stream_button` will support capturing content for the `:content` and
+`:turbo_streams` named blocks:
+
+```erb
+<%= render("turbo_stream_button", id: "call-to-action") do |button| %>
+  <%= button.content_for :content do %>
+    <span>Click me!</span>
+  <% end %>
+
+  <%= button.content_for :turbo_streams do %>
+    <%= turbo_stream.after("call-to-action") { "You clicked the call to action!" } %>
+  <% end %>
+<% end %>
+
+<%# =>  <button type="button" id="call-to-action"
+                data-controller="turbo-stream-button"
+                data-action="click->turbo-stream-button#evaluate">
+          <span>Click me!</span>
+
+          <template data-turbo-stream-button-target="turboStreams">
+            <turbo-stream action="after" target="call-to-action">
+              <template>You clicked the call to action!</template>
+            </turbo-stream>
+          </template>
+        </button> %>
+```
+
+[nice_partials]: https://github.com/bullet-train-co/nice_partials
+
 ## Installation
 
 Add the `turbo_stream_button` dependency to your application's Gemfile:
