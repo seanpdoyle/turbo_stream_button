@@ -1,0 +1,23 @@
+entrypoint = "README.md"
+hidden = [".bundle"]
+
+run = "cd /home/runner/${REPL_SLUG}/test/dummy && bundle exec rails server --binding=0.0.0.0"
+
+[env]
+PATH = "/home/runner/${REPL_SLUG}/bin"
+
+[packager]
+language = "ruby"
+
+[packager.features]
+packageSearch = true
+guessImports = true
+
+[languages.ruby]
+pattern = "**/*.rb"
+
+[languages.ruby.languageServer]
+start = ["solargraph", "stdio"]
+
+[nix]
+channel = "unstable"

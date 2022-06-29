@@ -4,5 +4,5 @@ Rails.application.routes.draw do
   resources :examples, only: [:create, :index]
 
   # Defines the root path route ("/")
-  # root "articles#index"
+  root to: redirect("/examples")
 end

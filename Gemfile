@@ -21,7 +21,11 @@ gem "sprockets-rails"
 
 gem "puma"
 gem "rexml"
-gem "standard"
+gem "tzinfo-data"
+
+group :development, :test do
+  gem "standard" unless ENV["REPL_SLUG"]
+end
 
 group :test do
   gem "action_dispatch-testing-integration-capybara",
