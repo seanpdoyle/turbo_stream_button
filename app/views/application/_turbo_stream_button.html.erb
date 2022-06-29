@@ -1,24 +1,13 @@
 <%
-  if respond_to?(:np)
-    yield partial = np
-
-    content = partial.content_for(:content)
-    turbo_streams = partial.content_for(:turbo_stream)
-  end
-
-  content ||= local_assigns[:content]
-  turbo_streams ||= yield
-
-  attributes = local_assigns.except(:content).with_defaults(
-    type: "button"
-  )
+    attributes = local_assigns.with_defaults(type: "button")
+    button = TurboStreamButton::Button.new(self)
 %>
 
 <%= content_tag :button, TurboStreamButton::Html.deep_merge_attributes(attributes, data: {
       controller: "turbo-stream-button",
       action: "click->turbo-stream-button#evaluate"
     }) do %>
-  <%= content %>
+  <%= yield button %>
 
-  <template data-turbo-stream-button-target="turboStreams"><%= turbo_streams %></template>
+  <template data-turbo-stream-button-target="turboStreams"><%= button.turbo_streams %></template>
 <% end %>

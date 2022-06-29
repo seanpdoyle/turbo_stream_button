@@ -3,7 +3,7 @@ require "test_helper"
 class ExamplesTest < ActionDispatch::IntegrationTest
   test "renders button content and default attributes" do
     post examples_path, params: {template: <<~ERB}
-      <%= render "turbo_stream_button", content: "Button contents" %>
+      <%= render("turbo_stream_button") { "Button contents" } %>
     ERB
 
     assert_button("Button contents", type: "button")
@@ -25,6 +25,18 @@ class ExamplesTest < ActionDispatch::IntegrationTest
     within(:button) do
       assert_css(%(template[data-turbo-stream-button-target~="turboStreams"]), visible: :all)
     end
+  end
+
+  test "does not duplicate turbo_streams contents when captured within <%= %>" do
+    post examples_path, params: {template: <<~ERB}
+      <%= render "turbo_stream_button" do |button| %>
+        <%= button.turbo_streams do %>
+          Only once
+        <% end %>
+      <% end %>
+    ERB
+
+    assert_equal ["Only once"], response.body.scan(/Only once/)
   end
 
   test "merges [data-controller] attribute" do

@@ -12,3 +12,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Changed
+
+- Replace checks for `nice_partials` with built-in support for capturing the
+  `turbo_streams` block
