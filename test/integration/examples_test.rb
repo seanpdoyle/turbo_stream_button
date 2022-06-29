@@ -58,4 +58,22 @@ class ExamplesTest < ActionDispatch::IntegrationTest
       assert_equal "click->turbo-stream-button#evaluate click->my-controller#action", button["data-action"]
     end
   end
+
+  test "turbo_stream_button_tag supports a block" do
+    post examples_path, params: {template: <<~ERB}
+      <%= turbo_stream_button_tag(data: { action: "click->my-controller#action" }) do |button| %>
+        A button
+
+        <% button.turbo_streams do %>
+          A turbo stream
+        <% end %>
+      <% end %>
+    ERB
+
+    assert_button("A button", type: "button") do |button|
+      assert_equal "click->turbo-stream-button#evaluate click->my-controller#action", button["data-action"]
+    end
+    assert_css(%(template[data-turbo-stream-button-target~="turboStreams"]), visible: :all)
+    assert_equal ["A turbo stream"], response.body.scan(/A turbo stream/)
+  end
 end

@@ -38,8 +38,9 @@ const application = Application.start()
 application.register("turbo-stream-button", TurboStreamButtonController)
 ```
 
-In your Rails templates, render the `turbo_stream_button` view partial to create
-the `<button>` element. The view partial renders:
+In your Rails templates, call the `turbo_stream_button_tag` helper or render the
+`turbo_stream_button` view partial to create the `<button>` element. The view
+partial renders:
 
 * the block content as the `<button>` element's content
 * other keyword arguments as the `<button>` element's attributes
@@ -57,7 +58,7 @@ element][mdn-template], activating any `<turbo-stream>` elements nested inside.
 ### Introductory: Hello, world
 
 ```html+erb
-<%= render "turbo_stream_button", id: "the-button" do |button| %>
+<%= turbo_stream_button_tag id: "the-button" do |button| %>
   <span>Click me to say "hello"</span>
 
   <% button.turbo_streams do %>
@@ -99,8 +100,8 @@ element][mdn-template], activating any `<turbo-stream>` elements nested inside.
 
 <div id="flash" role="alert"></div>
 
-<%= render "turbo_stream_button", value: "invitation-code-abc123",
-                                  data: { controller: "clipboard", action: "click->clipboard#copy" } do |button| %>
+<%= turbo_stream_button_tag value: "invitation-code-abc123",
+                            data: { controller: "clipboard", action: "click->clipboard#copy" } do |button| %>
   Copy to clipboard
 
   <% button.turbo_streams do %>
@@ -132,7 +133,7 @@ element][mdn-template], activating any `<turbo-stream>` elements nested inside.
 ```html+erb
 <div id="flash" role="alert"></div>
 
-<%= render "turbo_stream_button" do |button| %>
+<%= turbo_stream_button_tag do |button| %>
   Append flash message
 
   <% button.turbo_streams do %>
@@ -141,7 +142,7 @@ element][mdn-template], activating any `<turbo-stream>` elements nested inside.
         <div id="a_flash_message" role="status">
           Hello, world!
 
-          <%= render "turbo_stream_button" do |button| %>
+          <%= turbo_stream_button_tag do |button| %>
             Dismiss
 
             <% button.turbo_streams do %>
@@ -217,7 +218,7 @@ element][mdn-template], activating any `<turbo-stream>` elements nested inside.
     <ol id="references"></ol>
 
     <%= form.fields :reference_attributes, index: "{{counter}}" do |reference_form| %>
-      <%= render "turbo_stream_button" do |button| %>
+      <%= turbo_stream_button_tag do |button| %>
         Add reference
 
         <% button.turbo_streams do %>
