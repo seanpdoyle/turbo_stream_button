@@ -30,8 +30,12 @@
 <section>
   <h1>Say Hello</h1>
 
-  <%= render "turbo_stream_button", content: "Say hello", id: "hello_button" do %>
-    <%= turbo_stream.after "hello_button", tag.div(params.fetch(:message, "Hello, world"), role: "status") %>
+  <%= render "turbo_stream_button", id: "hello_button" do |button| %>
+    Say hello
+
+    <% button.turbo_streams do %>
+      <%= turbo_stream.after "hello_button", tag.div(params.fetch(:message, "Hello, world"), role: "status") %>
+    <% end %>
   <% end %>
 </section>
 
@@ -40,13 +44,17 @@
 
   <div id="clipboard_flash" role="alert"></div>
 
-  <%= render "turbo_stream_button", content: "Copy to clipboard", value: params.fetch(:invitation_code, "abc123"),
-                                    data: { controller: "clipboard", action: "click->clipboard#copy" } do %>
-    <turbo-stream action="append" target="clipboard_flash">
-      <template>
-        <div role="status">Copied "<%= params.fetch(:invitation_code, "abc123") %>" to clipboard.</div>
-      </template>
-    </turbo-stream>
+  <%= render "turbo_stream_button", value: params.fetch(:invitation_code, "abc123"),
+                                    data: { controller: "clipboard", action: "click->clipboard#copy" } do |button| %>
+    Copy to clipboard
+
+    <% button.turbo_streams do %>
+      <turbo-stream action="append" target="clipboard_flash">
+        <template>
+          <div role="status">Copied "<%= params.fetch(:invitation_code, "abc123") %>" to clipboard.</div>
+        </template>
+      </turbo-stream>
+    <% end %>
   <% end %>
 
   <label for="invitation_code">Invitation code (paste here)</label>
@@ -58,18 +66,26 @@
 
   <div id="nesting_flash" role="alert"></div>
 
-  <%= render "turbo_stream_button", content: "Append to flash" do %>
-    <turbo-stream action="append" target="nesting_flash">
-      <template>
-        <div id="a_flash_message" role="status">
-          <%= params.fetch(:message, "Hello, world") %>
+  <%= render "turbo_stream_button" do |button| %>
+    Append to flash
 
-          <%= render "turbo_stream_button", content: "Dismiss" do %>
-            <turbo-stream action="remove" target="a_flash_message"></turbo-stream>
-          <% end %>
-        </div>
-      </template>
-    </turbo-stream>
+    <% button.turbo_streams do %>
+      <turbo-stream action="append" target="nesting_flash">
+        <template>
+          <div id="a_flash_message" role="status">
+            <%= params.fetch(:message, "Hello, world") %>
+
+            <%= render "turbo_stream_button" do |button| %>
+              Dismiss
+
+              <% button.turbo_streams do %>
+                <turbo-stream action="remove" target="a_flash_message"></turbo-stream>
+              <% end %>
+            <% end %>
+          </div>
+        </template>
+      </turbo-stream>
+    <% end %>
   <% end %>
 </section>
 
@@ -83,18 +99,22 @@
       <ol id="references"></ol>
 
       <%= form.fields :reference_attributes, index: "{{counter}}" do |reference_form| %>
-        <%= render "turbo_stream_button", content: "Add reference" do %>
-          <turbo-stream action="append" target="references">
-            <template data-clone-target="template">
-              <li>
-                <%= reference_form.label :referrer %>
-                <%= reference_form.text_field :referrer %>
+        <%= render "turbo_stream_button" do |button| %>
+          Add reference
 
-                <%= reference_form.label :relationship %>
-                <%= reference_form.text_field :relationship %>
-              </li>
-            </template>
-          </turbo-stream>
+          <% button.turbo_streams do %>
+            <turbo-stream action="append" target="references">
+              <template data-clone-target="template">
+                <li>
+                  <%= reference_form.label :referrer %>
+                  <%= reference_form.text_field :referrer %>
+
+                  <%= reference_form.label :relationship %>
+                  <%= reference_form.text_field :relationship %>
+                </li>
+              </template>
+            </turbo-stream>
+          <% end %>
         <% end %>
       <% end %>
     </fieldset>

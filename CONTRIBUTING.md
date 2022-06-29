@@ -41,6 +41,7 @@ Here are some ways *you* can contribute:
 1. [Fork][fork] the [official repository][repo].
 1. [Create a topic branch.][branch]
 1. Implement your feature or bug fix.
+1. Add an entry to the [CHANGELOG.md](./CHANGELOG.md)
 1. Add, commit, and push your changes.
 1. [Submit a pull request.][pr]
 

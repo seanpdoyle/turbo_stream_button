@@ -56,12 +56,12 @@ element][mdn-template], activating any `<turbo-stream>` elements nested inside.
 ### Introductory: Hello, world
 
 ```html+erb
-<% content = capture do %>
+<%= render "turbo_stream_button", id: "the-button" do |button| %>
   <span>Click me to say "hello"</span>
-<% end %>
 
-<%= render "turbo_stream_button", content: content, id: "the-button" do %>
-  <%= turbo_stream.after "the-button", "Hello, world!" %>
+  <% button.turbo_streams do %>
+    <%= turbo_stream.after "the-button", "Hello, world!" %>
+  <% end %>
 <% end %>
 
 <%# =>  <button type="button" id="the-button"
@@ -98,13 +98,17 @@ element][mdn-template], activating any `<turbo-stream>` elements nested inside.
 
 <div id="flash" role="alert"></div>
 
-<%= render "turbo_stream_button", content: "Copy to clipboard", value: "invitation-code-abc123",
-                                  data: { controller: "clipboard", action: "click->clipboard#copy" } do %>
-  <turbo-stream action="append" target="flash">
-    <template>
-      <p>Copied "invitation-code-abc123" to your clipboard!</p>
-    </template>
-  </turbo-stream>
+<%= render "turbo_stream_button", value: "invitation-code-abc123",
+                                  data: { controller: "clipboard", action: "click->clipboard#copy" } do |button| %>
+  Copy to clipboard
+
+  <% button.turbo_streams do %>
+    <turbo-stream action="append" target="flash">
+      <template>
+        <p>Copied "invitation-code-abc123" to your clipboard!</p>
+      </template>
+    </turbo-stream>
+  <% end %>
 <% end %>
 
 <%# =>  <button type="button" value="invitation-code-abc123"
@@ -127,18 +131,22 @@ element][mdn-template], activating any `<turbo-stream>` elements nested inside.
 ```html+erb
 <div id="flash" role="alert"></div>
 
-<%= render "turbo_stream_button", content: "Append flash message" do %>
-  <turbo-stream action="append" target="flash">
-    <template>
-      <div id="a_flash_message" role="status">
-        Hello, world!
+<%= render "turbo_stream_button" do |button| %>
+  Append flash message
 
-        <%= render "turbo_stream_button", content: "Dismiss" do %>
-          <%= turbo_stream.remove "a_flash_message" %>
-        <% end %>
-      </div>
-    </template>
-  </turbo-stream>
+  <% button.turbo_streams do %>
+    <turbo-stream action="append" target="flash">
+      <template>
+        <div id="a_flash_message" role="status">
+          Hello, world!
+
+          <%= render "turbo_stream_button", content: "Dismiss" do %>
+            <%= turbo_stream.remove "a_flash_message" %>
+          <% end %>
+        </div>
+      </template>
+    </turbo-stream>
+  <% end %>
 <% end %>
 
 <%# =>  <button type="button"
@@ -204,18 +212,22 @@ element][mdn-template], activating any `<turbo-stream>` elements nested inside.
     <ol id="references"></ol>
 
     <%= form.fields :reference_attributes, index: "{{counter}}" do |reference_form| %>
-      <%= render "turbo_stream_button", content: "Add reference" do %>
-        <turbo-stream action="append" target="references">
-          <template data-clone-target="template">
-            <li>
-              <%= reference_form.label :referrer %>
-              <%= reference_form.text_field :referrer %>
+      <%= render "turbo_stream_button" do |button| %>
+        Add reference
 
-              <%= reference_form.label :relationship %>
-              <%= reference_form.text_field :relationship %>
-            </li>
-          </template>
-        </turbo-stream>
+        <% button.turbo_streams do %>
+          <turbo-stream action="append" target="references">
+            <template data-clone-target="template">
+              <li>
+                <%= reference_form.label :referrer %>
+                <%= reference_form.text_field :referrer %>
+
+                <%= reference_form.label :relationship %>
+                <%= reference_form.text_field :relationship %>
+              </li>
+            </template>
+          </turbo-stream>
+        <% end %>
       <% end %>
     <% end %>
   </fieldset>
@@ -255,38 +267,6 @@ bundle exec rails server --port 3000
 Then, visit <http://localhost:3000/examples>.
 
 [dummy application]: ./test/dummy
-
-## Integrating with [`nice_partials`][nice_partials]
-
-If an application depends on [`nice_partials`][nice_partials], the
-`turbo_stream_button` will support capturing content for the `:content` and
-`:turbo_streams` named blocks:
-
-```erb
-<%= render("turbo_stream_button", id: "call-to-action") do |button| %>
-  <%= button.content_for :content do %>
-    <span>Click me!</span>
-  <% end %>
-
-  <%= button.content_for :turbo_streams do %>
-    <%= turbo_stream.after("call-to-action") { "You clicked the call to action!" } %>
-  <% end %>
-<% end %>
-
-<%# =>  <button type="button" id="call-to-action"
-                data-controller="turbo-stream-button"
-                data-action="click->turbo-stream-button#evaluate">
-          <span>Click me!</span>
-
-          <template data-turbo-stream-button-target="turboStreams">
-            <turbo-stream action="after" target="call-to-action">
-              <template>You clicked the call to action!</template>
-            </turbo-stream>
-          </template>
-        </button> %>
-```
-
-[nice_partials]: https://github.com/bullet-train-co/nice_partials
 
 ## Installation
 
