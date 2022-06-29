@@ -41,9 +41,10 @@ application.register("turbo-stream-button", TurboStreamButtonController)
 In your Rails templates, render the `turbo_stream_button` view partial to create
 the `<button>` element. The view partial renders:
 
-* `content:` as the `<button>` element's content
+* the block content as the `<button>` element's content
 * other keyword arguments as the `<button>` element's attributes
-* block content as the `<template>` element's content
+* any content captured by any call to the `#turbo_streams` method invoked on the
+  block's single argument
 
 When the button is clicked, the `turbo-stream-button` [Stimulus controller][]
 invokes the `evaluate` [Action][] to insert the contents of the [`<template>`
@@ -140,8 +141,12 @@ element][mdn-template], activating any `<turbo-stream>` elements nested inside.
         <div id="a_flash_message" role="status">
           Hello, world!
 
-          <%= render "turbo_stream_button", content: "Dismiss" do %>
-            <%= turbo_stream.remove "a_flash_message" %>
+          <%= render "turbo_stream_button" do |button| %>
+            Dismiss
+
+            <% button.turbo_streams do %>
+              <%= turbo_stream.remove "a_flash_message" %>
+            <% end %>
           <% end %>
         </div>
       </template>
