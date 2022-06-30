@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Support multiple tokens in token list mergers
 - Resolve `TurboStreamButton::Helpers` loading issue
 
 ## 0.2.0
