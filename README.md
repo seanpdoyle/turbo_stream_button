@@ -272,14 +272,14 @@ bundle exec rails server --port 3000
 
 Then, visit <http://localhost:3000/examples>.
 
-[![Run on Repl.it](https://repl.it/badge/github/seanpdoyle/turbo_stream_button)](https://repl.it/github/seanpdoyle/turbo_stream_button)
+[![Run on Repl.it](https://repl.it/badge/github/seanpdoyle/turbo_stream_button)](https://replit.com/@seanpdoyle/turbostreambutton)
 
 You can also fork the [@seanpdoyle/turbo_stream_button][] sandbox project on
 [replit.com][].
 
 [dummy application]: ./test/dummy
 [replit.com]: https://replit.com/
-[@seanpdoyle/turbo_stream_button]: https://replit.com/@seanpdoyle/turbo_stream_button
+[@seanpdoyle/turbo_stream_button]: https://replit.com/@seanpdoyle/turbostreambutton
 
 ## Installation
 
