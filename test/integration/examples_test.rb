@@ -41,21 +41,21 @@ class ExamplesTest < ActionDispatch::IntegrationTest
 
   test "merges [data-controller] attribute" do
     post examples_path, params: {template: <<~ERB}
-      <%= render "turbo_stream_button", data: { controller: "my-controller" } %>
+      <%= render "turbo_stream_button", data: { controller: "my-controller another-controller" } %>
     ERB
 
     assert_button(type: "button") do |button|
-      assert_equal "turbo-stream-button my-controller", button["data-controller"]
+      assert_equal "turbo-stream-button my-controller another-controller", button["data-controller"]
     end
   end
 
   test "merges [data-action] attribute" do
     post examples_path, params: {template: <<~ERB}
-      <%= render "turbo_stream_button", data: { action: "click->my-controller#action" } %>
+      <%= render "turbo_stream_button", data: { action: "click->my-controller#action click->another-controller#action" } %>
     ERB
 
     assert_button(type: "button") do |button|
-      assert_equal "click->turbo-stream-button#evaluate click->my-controller#action", button["data-action"]
+      assert_equal "click->turbo-stream-button#evaluate click->my-controller#action click->another-controller#action", button["data-action"]
     end
   end
 
