@@ -1,5 +1,5 @@
 module TurboStreamButton
-  module Helpers
+  module ApplicationHelpers
     def turbo_stream_button_tag(**attributes, &block)
       render("turbo_stream_button", **attributes, &block)
     end

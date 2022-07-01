@@ -7,11 +7,5 @@ module TurboStreamButton
         ]
       end
     end
-
-    initializer "turbo_stream_button.action_view" do |app|
-      ActiveSupport.on_load :action_view do
-        include TurboStreamButton::Helpers
-      end
-    end
   end
 end
