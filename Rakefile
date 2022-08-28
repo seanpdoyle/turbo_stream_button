@@ -11,7 +11,14 @@ namespace :test do
   end
 
   desc "Runs all tests, including system tests"
-  task all: %w[test test:system]
+  task all: %w[test:unit test:system]
+
+  desc "Run unit tests only"
+  task :unit do
+    $: << "test"
+
+    Rails::TestUnit::Runner.rake_run(["test"])
+  end
 
   desc "Run system tests only"
   task system: %w[test:prepare] do
