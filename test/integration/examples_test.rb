@@ -76,4 +76,25 @@ class ExamplesTest < ActionDispatch::IntegrationTest
     assert_css(%(template[data-turbo-stream-button-target~="turboStreams"]), visible: :all)
     assert_equal ["A turbo stream"], response.body.scan(/A turbo stream/)
   end
+
+  test "turbo_stream_button merges into other helpers" do
+    post examples_path, params: {template: <<~ERB}
+      <%= form_with url: "/" do |form| %>
+        <%= form.button **turbo_stream_button, type: :submit do %>
+          A button
+
+          <%= tag.template id: "a-template", **turbo_stream_button.template do %>
+            A turbo stream
+          <% end %>
+        <% end %>
+      <% end %>
+    ERB
+
+    assert_button("A button", type: "submit") do |button|
+      assert_equal "turbo-stream-button", button["data-controller"]
+      assert_equal "click->turbo-stream-button#evaluate", button["data-action"]
+    end
+    assert_css(%(template[id="a-template"][data-turbo-stream-button-target~="turboStreams"]), visible: :all)
+    assert_equal ["A turbo stream"], response.body.scan(/A turbo stream/)
+  end
 end

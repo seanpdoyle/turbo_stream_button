@@ -260,6 +260,88 @@ element][mdn-template], activating any `<turbo-stream>` elements nested inside.
         </button> %>
 ```
 
+## Helpers
+
+There are two helpers declared by the engine:
+
+### `turbo_stream_button_tag`
+
+The `turbo_stream_button_tag` helper renders a `<button>` element ready to
+evaluate a collection of `<turbo-stream>` elements:
+
+```erb
+<%= turbo_stream_button_tag do |button| %>
+  Click to append "Hello!"
+
+  <% button.turbo_streams do %>
+    <%= turbo_stream.append_all "body" do %>
+      Hello!
+    <% end %>
+  <% end %>
+<% end %>
+```
+
+### `turbo_stream_button`
+
+The `turbo_stream_button` helper returns an attributes-aware HTML tag builder.
+Render a `<button>` element with the appropriate `[data-controller]` and
+`[data-action]` attributes by calling `#tag`:
+
+```erb
+<%= turbo_stream_button.tag do %>
+  Click to append "Hello!"
+<% end %>
+```
+
+The return a `Hash` of attributes containing the appropriate `[data-controller]`
+and `[data-action]` attributes, call `#merge`, `#to_h` or splat them into
+keyword arguments (with `**`):
+
+```erb
+<%= form_with model: Post.new do |form| %>
+  <%= form.button **turbo_stream_button, type: :submit do %>
+    Click to append "Hello!"
+
+    <%= tag.template turbo_stream_button.template.merge(data: { a_controller_target: "template" }) do %>
+      <%= turbo_stream.append_all "body" do %>
+        Hello!
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
+```
+
+To render the `<template>` element nested within the `<button>`, call
+`#template_tag`:
+
+```erb
+<%= turbo_stream_button.tag do %>
+  Click to append "Hello!"
+
+  <% turbo_stream_button.template_tag do %>
+    <%= turbo_stream.append_all "body" do %>
+      Hello!
+    <% end %>
+  <% end %>
+<% end %>
+```
+
+The return a `Hash` of attributes containing the appropriate
+`[data-turbo-stream-button-target]` attribute, call `#merge`, `#to_h`, or splat
+them into keyword arguments (with `**`):
+
+```erb
+<%= turbo_stream_button.tag do %>
+  Click to append "Hello!"
+
+  <%= tag.template turbo_stream_button.template.merge(data: { a_controller_target: "template" }) do %>
+    <%= turbo_stream.append_all "body" do %>
+      Hello!
+    <% end %>
+  <% end %>
+<% end %>
+```
+
 ## Exploring examples
 
 To poke around with some working examples, start the [dummy application][]
