@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Introduce `turbo_stream_button` and `turbo_stream_button.template` helpers
+  that know how to render themselves as attributes or elements
+
+      form_with model: Post.new do |form|
+        form.button **turbo_stream_button, type: :submit do
+          turbo_stream_button.template.tag do
+            turbo_stream.append(...)
+          end
+        end
+      end
+
 ### Fixed
 
 - Support multiple tokens in token list mergers
