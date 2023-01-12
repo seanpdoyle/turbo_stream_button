@@ -5,7 +5,7 @@ module TurboStreamButton
     end
 
     def turbo_stream_button_tag(**attributes, &block)
-      render("turbo_stream_button", **attributes, &block)
+      render("application/turbo_stream_button", **attributes, &block)
     end
   end
 end
