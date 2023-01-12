@@ -385,6 +385,7 @@ project's `config/importmap.rb` declaration:
 ```ruby
 # config/importmap.rb
 
+pin "stimulus", to: "stimulus.min.js", preload: true
 pin "@seanpdoyle/turbo_stream_button", to: "turbo_stream_button.js"
 ```
 
