@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## 0.2.1 (Jan 12, 2023)
+
 - Introduce `turbo_stream_button` and `turbo_stream_button.template` helpers
   that know how to render themselves as attributes or elements
 
@@ -23,7 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support multiple tokens in token list mergers
 - Resolve `TurboStreamButton::Helpers` loading issue
 
-## 0.2.0
+## 0.2.0 (Jun 30, 2022 )
 
 ### Changed
 
