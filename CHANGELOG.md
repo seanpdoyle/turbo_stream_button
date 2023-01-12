@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Qualify call to `render "turbo_stream_button_tag"` with `application/`
+  namespace
+
 ## 0.2.1 (Jan 12, 2023)
 
 - Introduce `turbo_stream_button` and `turbo_stream_button.template` helpers
