@@ -7,7 +7,7 @@ gemspec
 # Start debugger with binding.b [https://github.com/ruby/debug]
 # gem "debug", ">= 1.0.0"
 
-rails_version = ENV.fetch("RAILS_VERSION", "7.0")
+rails_version = ENV.fetch("RAILS_VERSION", "7.2")
 
 rails_constraint = if rails_version == "main"
   {github: "rails/rails"}
@@ -32,7 +32,6 @@ group :test do
     github: "thoughtbot/action_dispatch-testing-integration-capybara", tag: "v0.1.0",
     require: "action_dispatch/testing/integration/capybara/minitest"
   gem "capybara"
-  gem "capybara_accessible_selectors", github: "citizensadvice/capybara_accessible_selectors", branch: "main"
-  gem "selenium-webdriver"
-  gem "webdrivers"
+  gem "capybara_accessible_selectors", github: "citizensadvice/capybara_accessible_selectors", tag: "v0.10.0"
+  gem "cuprite", require: "capybara/cuprite"
 end

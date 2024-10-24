@@ -11,13 +11,13 @@
       {
         "imports": {
           "stimulus": "https://cdn.skypack.dev/stimulus@2.0.0",
-          "@hotwired/turbo": "https://cdn.skypack.dev/@hotwired/turbo",
+          "@hotwired/turbo-rails": "<%= asset_url "turbo.js" %>",
           "@seanpdoyle/turbo_stream_button": "<%= asset_url "turbo_stream_button.js" %>"
         }
       }
     </script>
     <script type="module">
-      import "@hotwired/turbo"
+      import "@hotwired/turbo-rails"
       import { Application } from "stimulus"
       import { TurboStreamButtonController } from "@seanpdoyle/turbo_stream_button"
 

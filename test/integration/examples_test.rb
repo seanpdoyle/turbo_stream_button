@@ -36,7 +36,7 @@ class ExamplesTest < ActionDispatch::IntegrationTest
       <% end %>
     ERB
 
-    assert_equal ["Only once"], response.body.scan(/Only once/)
+    assert_equal ["Only once"], response.body.scan("Only once")
   end
 
   test "merges [data-controller] attribute" do
@@ -74,7 +74,7 @@ class ExamplesTest < ActionDispatch::IntegrationTest
       assert_equal "click->turbo-stream-button#evaluate click->my-controller#action", button["data-action"]
     end
     assert_css(%(template[data-turbo-stream-button-target~="turboStreams"]), visible: :all)
-    assert_equal ["A turbo stream"], response.body.scan(/A turbo stream/)
+    assert_equal ["A turbo stream"], response.body.scan("A turbo stream")
   end
 
   test "turbo_stream_button merges into other helpers" do
@@ -95,6 +95,6 @@ class ExamplesTest < ActionDispatch::IntegrationTest
       assert_equal "click->turbo-stream-button#evaluate", button["data-action"]
     end
     assert_css(%(template[id="a-template"][data-turbo-stream-button-target~="turboStreams"]), visible: :all)
-    assert_equal ["A turbo stream"], response.body.scan(/A turbo stream/)
+    assert_equal ["A turbo stream"], response.body.scan("A turbo stream")
   end
 end
