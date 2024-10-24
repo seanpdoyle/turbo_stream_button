@@ -4,8 +4,8 @@ module TurboStreamButton
       TurboStreamButton::Button.new(self)
     end
 
-    def turbo_stream_button_tag(**attributes, &block)
-      render("application/turbo_stream_button", **attributes, &block)
+    def turbo_stream_button_tag(**attributes, &)
+      render("application/turbo_stream_button", **attributes, &)
     end
   end
 end

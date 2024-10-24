@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Drop [end-of-life Ruby] versions 2.7 and 3.0
+- Drop [end-of-life Rails] versions 6.2 and 7.0
+
+[end-of-life Ruby]: https://www.ruby-lang.org/en/downloads/branches/
+[end-of-lie Rails]: https://rubyonrails.org/maintenance
+
 ## 0.2.3 (Oct 24, 2024)
 
 - Expand matrix of supported versions to include `ruby@3.3` and `rails@7.2`.
