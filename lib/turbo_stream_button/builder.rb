@@ -7,11 +7,11 @@ module TurboStreamButton
     end
 
     def tag(*arguments, **overrides, &block)
-      @view_context.content_tag(@tag_name, *arguments, **Html.deep_merge_attributes(overrides, **@attributes), &block)
+      @view_context.content_tag(@tag_name, *arguments, **Html.deep_merge_attributes(@view_context, @attributes, overrides), &block)
     end
 
     def merge(overrides)
-      Builder.new(@view_context, @tag_name, Html.deep_merge_attributes(overrides, **@attributes))
+      Builder.new(@view_context, @tag_name, Html.deep_merge_attributes(@view_context, @attributes, overrides))
     end
 
     def deep_merge(overrides)

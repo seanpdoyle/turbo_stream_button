@@ -49,6 +49,16 @@ class ExamplesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "merges [data-controller] attribute as #token_list arguments" do
+    post examples_path, params: {template: <<~ERB}
+      <%= render "turbo_stream_button", data: { controller: ["my-controller", "another-controller" => true] } %>
+    ERB
+
+    assert_button(type: "button") do |button|
+      assert_equal "turbo-stream-button my-controller another-controller", button["data-controller"]
+    end
+  end
+
   test "merges [data-action] attribute" do
     post examples_path, params: {template: <<~ERB}
       <%= render "turbo_stream_button", data: { action: "click->my-controller#action click->another-controller#action" } %>
@@ -56,6 +66,16 @@ class ExamplesTest < ActionDispatch::IntegrationTest
 
     assert_button(type: "button") do |button|
       assert_equal "click->turbo-stream-button#evaluate click->my-controller#action click->another-controller#action", button["data-action"]
+    end
+  end
+
+  test "merges [data-action] attribute as #token_list arguments" do
+    post examples_path, params: {template: <<~ERB}
+      <%= render "turbo_stream_button", data: { action: ["click->my-controller#a", "click->my-controller#b" => true] } %>
+    ERB
+
+    assert_button(type: "button") do |button|
+      assert_equal "click->turbo-stream-button#evaluate click->my-controller#a click->my-controller#b", button["data-action"]
     end
   end
 
