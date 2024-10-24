@@ -10,6 +10,8 @@ Gem::Specification.new do |spec|
   spec.description = "Combine built-in Button elements and Turbo Streams to drive client-side interactions through declarative HTML"
   spec.license = "MIT"
 
+  spec.required_ruby_version = ">= 3.1.0"
+
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = "https://github.com/seanpdoyle/turbo_stream_button"
   spec.metadata["changelog_uri"] = "https://github.com/seanpdoyle/turbo_stream_button/blob/main/CHANGELOG.md"
@@ -18,6 +20,6 @@ Gem::Specification.new do |spec|
     Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
   end
 
-  spec.add_dependency "rails", ">= 6.0"
+  spec.add_dependency "rails", ">= 7.1"
   spec.add_dependency "zeitwerk"
 end
