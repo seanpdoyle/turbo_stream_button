@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Expand matrix of supported versions to include `ruby@3.3` and `rails@7.2`.
+
 ## 0.2.2 (Jan 12, 2023)
 
 - Qualify call to `render "turbo_stream_button_tag"` with `application/`
