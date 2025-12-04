@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## 0.3.0 (Dec 02, 2025)
+
 - Replace `stimulus` with `@hotwired/stimulus`
 - Drop [end-of-life Ruby] versions 2.7, 3.0, and 3.1
 - Drop [end-of-life Rails] versions 6.2, 7.0, 7.1, and 7.2
