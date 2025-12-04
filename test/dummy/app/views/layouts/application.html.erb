@@ -10,7 +10,7 @@
     <script type="importmap">
       {
         "imports": {
-          "stimulus": "https://cdn.skypack.dev/stimulus@2.0.0",
+          "@hotwired/stimulus": "<%= asset_url "stimulus.js" %>",
           "@hotwired/turbo-rails": "<%= asset_url "turbo.js" %>",
           "@seanpdoyle/turbo_stream_button": "<%= asset_url "turbo_stream_button.js" %>"
         }
@@ -18,7 +18,7 @@
     </script>
     <script type="module">
       import "@hotwired/turbo-rails"
-      import { Application } from "stimulus"
+      import { Application } from "@hotwired/stimulus"
       import { TurboStreamButtonController } from "@seanpdoyle/turbo_stream_button"
 
       window.application = Application.start()

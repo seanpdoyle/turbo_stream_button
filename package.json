@@ -19,7 +19,7 @@
     "typescript": "^4.2.4"
   },
   "dependencies": {
-    "stimulus": "^2.0.0",
+    "@hotwired/stimulus": "^3.0.0",
     "@hotwired/turbo": "^7.0.0"
   },
   "scripts": {
