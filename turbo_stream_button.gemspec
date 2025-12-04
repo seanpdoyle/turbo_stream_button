@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.description = "Combine built-in Button elements and Turbo Streams to drive client-side interactions through declarative HTML"
   spec.license = "MIT"
 
-  spec.required_ruby_version = ">= 3.1.0"
+  spec.required_ruby_version = ">= 3.2.0"
 
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = "https://github.com/seanpdoyle/turbo_stream_button"
