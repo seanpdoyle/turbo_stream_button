@@ -31,7 +31,7 @@ controller with your Stimulus application:
 
 ```javascript
 import "@hotwired/turbo"
-import { Application } from "stimulus"
+import { Application } from "@hotwired/stimulus"
 import { TurboStreamButtonController } from "@seanpdoyle/turbo_stream_button"
 
 const application = Application.start()
@@ -84,7 +84,7 @@ element][mdn-template], activating any `<turbo-stream>` elements nested inside.
 ```html+erb
 <script type="module">
   import "@hotwired/turbo"
-  import { Application, Controller } from "stimulus"
+  import { Application, Controller } from "@hotwired/stimulus"
   import { TurboStreamButtonController } from "@seanpdoyle/turbo_stream_button"
 
   class ClipboardController extends Controller {
@@ -187,7 +187,7 @@ element][mdn-template], activating any `<turbo-stream>` elements nested inside.
 ```html+erb
 <script type="module">
   import "@hotwired/turbo"
-  import { Application } from "stimulus"
+  import { Application } from "@hotwired/stimulus"
   import { TurboStreamButtonController } from "@seanpdoyle/turbo_stream_button"
   import { TemplateInstance } from "https://cdn.skypack.dev/@github/template-parts"
 
@@ -385,7 +385,7 @@ project's `config/importmap.rb` declaration:
 ```ruby
 # config/importmap.rb
 
-pin "stimulus", to: "stimulus.min.js", preload: true
+pin "@hotwired/stimulus", to: "stimulus.min.js", preload: true
 pin "@seanpdoyle/turbo_stream_button", to: "turbo_stream_button.js"
 ```
 

@@ -18,6 +18,7 @@ end
 gem "rails", rails_constraint
 gem "turbo-rails"
 gem "sprockets-rails"
+gem "stimulus-rails"
 
 gem "puma"
 gem "rexml"
