@@ -71,7 +71,7 @@ element][mdn-template], activating any `<turbo-stream>` elements nested inside.
                 data-action="click->turbo-stream-button#evaluate">
           <span>Click me to say "hello"</span>
 
-          <template data-turbo-stream-target="turboStreams">
+          <template data-turbo-stream-button-target="turboStreams">
             <turbo-stream action="after" target="the-button">
               <template>Hello, world!</template>
             </turbo-stream>
@@ -118,7 +118,7 @@ element][mdn-template], activating any `<turbo-stream>` elements nested inside.
                 data-action="click->turbo-stream-button#evaluate click->clipboard#copy">
           Copy to clipboard
 
-          <template data-turbo-stream-target="turboStreams">
+          <template data-turbo-stream-button-target="turboStreams">
             <turbo-stream action="append" target="flash">
               <template>
                 <p>Copied "invitation-code-abc123" to your clipboard!</p>
@@ -160,7 +160,7 @@ element][mdn-template], activating any `<turbo-stream>` elements nested inside.
                 data-action="click->turbo-stream-button#evaluate">
           Append flash message
 
-          <template data-turbo-stream-target="turboStreams">
+          <template data-turbo-stream-button-target="turboStreams">
             <turbo-stream action="append" target="flash">
               <template>
                 <div id="a_flash_message" role="status">
@@ -171,7 +171,7 @@ element][mdn-template], activating any `<turbo-stream>` elements nested inside.
                           data-action="click->turbo-stream-button#evaluate">
                     Dismiss
 
-                    <template data-turbo-stream-target="turboStreams">
+                    <template data-turbo-stream-button-target="turboStreams">
                       <turbo-stream action="remove" target="a_flash_message"></turbo-stream>
                     </template>
                   </button>
