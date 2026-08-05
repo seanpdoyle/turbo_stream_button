@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Expand `@hotwired/turbo` version range to `>= 7.0.0`
+
 ## 0.3.0 (Dec 02, 2025)
 
 - Replace `stimulus` with `@hotwired/stimulus`
