@@ -14,7 +14,7 @@
     "@rollup/plugin-typescript": "^8.3.2",
     "rollup": "^2.75.1",
     "rollup-plugin-exclude-dependencies-from-bundle": "^1.1.22",
-    "ts-loader": "^9.1.1",
+    "ts-loader": "^9.6.2",
     "tslib": "^2.4.0",
     "typescript": "^4.2.4"
   },
